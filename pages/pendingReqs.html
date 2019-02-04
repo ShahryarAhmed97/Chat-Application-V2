@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>All users</title>
+    <link rel="stylesheet" href="../styleSheets/pendingReqs.css">
+    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type = "text/javascript" >
+        function preventBack(){window.history.forward();}
+         setTimeout("preventBack()", 0);
+         window.onunload=function(){null};
+     </script>
+</head>
+<body onLoad="loadFun()">
+
+
+        <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand my-color" href="./index.html">Chat App</a>
+                    </div>
+                    <div class="collapse navbar-collapse" >
+                        <ul class="nav navbar-nav"> 
+                            <li>    
+                            </li>
+                        </ul>
+                       
+                        <ul class="nav navbar-nav navbar-right">
+                                <li><a href="./allUsers.html"><span class="glyphicon glyphicon-users"></span>All users</a></li>
+                                <li><a href="../pages/home.html"><span class="glyphicon glyphicon-users"></span>My Friends</a></li>
+                                <li><a href="../pages/pendingReqs.html"><span class="glyphicon glyphicon-users"></span>Pending Requests</a></li>
+                                <li><a href="../pages/blockedUsers.html"><span class="glyphicon glyphicon-users"></span>Blocked Users</a></li>
+    
+                                <li><a href="#" onclick="logOutFun()"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+    
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+
+    <div class="col-md-12" id="headDiv" >
+        
+            <div class="col-md-8">
+                    <h2>Connect with Peoples stay Socialize</h2>
+                  </div>
+          
+                  <div class="col-md-4 "  >
+                     <div class="col-md-10 input-group" style="margin-top:10px;">
+
+                         <input type="search" name="search" id="search" class="form-control">
+                         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+
+                        </div>
+                   
+                          
+                  </div>
+    </div>
+
+    <div class="col-md-10 col-md-offset-1"id="homeDiv" >
+
+
+       
+
+    </div>
+    
+    <script src="../scripts/pendingReqs.js"></script>
+</body>
+</html>

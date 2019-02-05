@@ -46,8 +46,12 @@ for(var key in allUsers){
 
   function addFrnds(key){
 var userUid=localStorage.getItem('currentUserUid');
-    firebase.database().ref('allChats/pendingReqs/'+key)
-    .push(userUid)
+let userObj={
+    userUid
+
+}
+    firebase.database().ref('allChats/pendingReqs/'+key+"/"+userUid)
+    .push(userObj)
     .then((success)=>{
         // alert('Frnd added Successfully');
         loadFun();

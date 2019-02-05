@@ -12,51 +12,76 @@ var config = {
 
 
   function loadFun(){
+    var userUid=localStorage.getItem('currentUserUid');
+
     document.getElementById("homeDiv").innerHTML=""
-    firebase.database().ref("allusers/")
+    firebase.database().ref("allChats/pendingReqs/"+userUid)
     .on('value',(data)=>{
-     var allUsers=data.val();
-
-for(var key in allUsers){
-
-     document.getElementById("homeDiv").innerHTML+=
-     `
-     <div class="col-md-4 userDiv"  >
-     <div class="col-md-4" style="">
-         <img src="../images/emptyUser.png" alt="users" height="70px" width="70px" class="userImg">
-
-     </div>
-     <div class="col-md-4" style="margin-top:15px" >
-         <h4>${allUsers[key].userName}</h4>
-
-     </div> 
-
-     <div class="col-md-4" style="margin-top:15px">
-     <button class="btn btn-primary" onclick="addFrnds('${key}')">Add Friend</button>
-     </div>
-
- </div>
+     var penUsers=data.val();
+    //  for(var key in penUsers){
+    //      console.log(penUsers[key])
+    //  }
+     for(var key in penUsers){
+        console.log(key)
+         firebase.database().ref("allusers/"+key)
+         .on('value',(data1)=>{
+             var penUserData=data1.val();
 
 
-`
+
+
+            document.getElementById("homeDiv").innerHTML+=
+            `
+            <div class="col-md-4 userDiv"  >
+            <div class="col-md-4" style="">
+                <img src="../images/emptyUser.png" alt="users" height="70px" width="70px" class="userImg">
+       
+            </div>
+            <div class="col-md-4" style="margin-top:15px" >
+                <h4>${penUserData.userName}</h4>
+       
+            </div> 
+       
+            <div class="col-md-4" style="margin-top:15px">
+            <button class="btn btn-primary" onclick="cnfrmFrnds('${penUserData.userUid}')">Accept</button>
+            </div>
+       
+        </div>
+       
+       
+       `
+
+
+         })
+
+    
 }
     })
 
   }
 
-  function addFrnds(key){
-var userUid=localStorage.getItem('currentUserUid');
-    firebase.database().ref('allChats/pendingReqs/'+key)
-    .push(userUid)
-    .then((success)=>{
-        // alert('Frnd added Successfully');
-        loadFun();
-
-    })
-    .catch((error)=>{
-alert(error);
-loadFun();
-    })
+  function cnfrmFrnds(key){
+    var userUid=localStorage.getItem('currentUserUid');
+        firebase.database().ref('allusers/'+userUid+'/myfrnds/')
+        .push(key)
+        .then((success)=>{
+console.log(key)
+           let delRef= firebase.database().ref('allChats/pendingReqs/'+userUid+'/'+key).remove()
+          
+// delRef.child(key).remove()
+            .then((success)=>{
+alert(success)
+                loadFun()
+            })
+            .catch((error)=>{
+alert(error.message)
+            })
+    
+        })
+        .catch((error)=>{
+    alert(error);
+    loadFun();
+        })
   }
 
   

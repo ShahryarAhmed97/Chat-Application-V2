@@ -66,22 +66,34 @@ var config = {
         .push(key)
         .then((success)=>{
 console.log(key)
-           let delRef= firebase.database().ref('allChats/pendingReqs/'+userUid+'/'+key).remove()
+
+firebase.database().ref('allusers/'+key+'/myfrnds/')
+.push(userUid)
+.then((success)=>{
+
+
+    let delRef= firebase.database().ref('allChats/pendingReqs/'+userUid+'/'+key).remove()
           
-// delRef.child(key).remove()
-            .then((success)=>{
-alert(success)
-                loadFun()
+    // delRef.child(key).remove()
+                .then((success)=>{
+    alert(success)
+                    loadFun()
+                })
+                .catch((error)=>{
+    alert(error.message)
+                })
+        
             })
             .catch((error)=>{
-alert(error.message)
+        alert(error);
+        loadFun();
             })
-    
-        })
-        .catch((error)=>{
-    alert(error);
-    loadFun();
-        })
+
+})
+.catch((error)=>{
+
+})
+          
   }
 
   

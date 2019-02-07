@@ -1,0 +1,89 @@
+
+function contactIdFun(email,key){
+
+  document.getElementById('msg').value="";
+    var userUid=localStorage.getItem('currentUserUid');
+    var recieverEmail=email;
+    var recieverId=key;
+    localStorage.setItem('recieverId',key)
+    localStorage.setItem('recieverEmail',email)
+  var msgsViewDiv2=document.getElementById('msgsViewDiv2');
+     document.getElementById('recieverId').value=recieverEmail;
+ 
+
+  
+  
+     firebase.database().ref('allChats/FrndsChats/'+userUid+'/'+recieverId+'/Sender/')
+     .on('value',(data)=>{
+       var msgsData=data.val();
+       msgsViewDiv2.innerHTML="";
+       for(var key in msgsData){
+        
+  if(msgsData[key].currentUserData==undefined){
+    msgsData[key].currentUserData=recieverEmail;
+  }
+          
+          msgsViewDiv2.innerHTML+=
+          `
+          <table   style='overflow-wrap: break-word;padding:10px;border-radius:10px;box-shadow:0px 0px 20px grey;'>
+          <tr  style='padding:10px'>
+          <td style='font-size:1.3em;padding:10px;overflow-wrap: break-word;width:100px !important ;' ><p  style='width:300px !important ;overflow-wrap: break-word;'>${msgsData[key].msg}</p> </td>
+         
+         </tr>
+
+        <tr style='text-align:right; color:grey;border-top:2px solid lightgrey;padding:10px;'>
+        <td>${msgsData[key].tStamp}&nbsp;&nbsp;&nbsp; ${msgsData[key].currentUserData} </td>
+        </tr>
+      
+          </table>
+          <br><br>
+          `
+        
+       }
+
+       setInterval(updateScroll,1000);
+
+  
+     })
+
+     var msgViewDiv1=document.getElementById("msgViewDiv1");
+     firebase.database().ref('allChats/FrndsChats/'+userUid+'/'+recieverId+'/Reciever/')
+     .on('value',(data)=>{
+       var msgsData=data.val();
+       msgsViewDiv1.innerHTML="";
+       for(var key in msgsData){
+        
+  if(msgsData[key].currentUserData==undefined){
+    msgsData[key].currentUserData=recieverEmail;
+  }
+          
+  msgsViewDiv1.innerHTML+=
+          `
+          <table   style='overflow-wrap: break-word;padding:10px;border-radius:10px;box-shadow:0px 0px 20px grey;'>
+          <tr  style='padding:10px'>
+          <td style='font-size:1.3em;padding:10px;overflow-wrap: break-word;width:100px !important ;' ><p  style='width:300px !important ;overflow-wrap: break-word;'>${msgsData[key].msg}</p> </td>
+         
+         </tr>
+
+        <tr style='text-align:right; color:grey;border-top:2px solid lightgrey;padding:10px;'>
+        <td>${msgsData[key].tStamp}&nbsp;&nbsp;&nbsp; ${msgsData[key].currentUserData} </td>
+        </tr>
+      
+          </table>
+          <br><br>
+          `
+        
+       }
+
+       setInterval(updateScroll,1000);
+
+  
+     })  
+  
+  
+  
+  
+  
+  
+  }
+  

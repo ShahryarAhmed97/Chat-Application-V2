@@ -94,33 +94,32 @@ function fbLogFun(){
       firebase.auth().signInWithPopup(provider).then(function(result) {
         var token = result.credential.accessToken;
         var user = result.user;
-        localStorage.setItem('user',JSON.stringify(user));
+        localStorage.setItem('fbUser',JSON.stringify(user));
         localStorage.setItem('token',token)
 
         let userUid=firebase.auth().currentUser.uid;
         localStorage.setItem('currentUserUid',userUid);
-        // for(var key in user){
-       
-        //    var uid = user[key].uid;
-        //    var email=user[key].email;
-        //    var displayName=user[key].displayName;
-        // }
 
-        // let userObj={
-        //   uid,
-        //   email,
-        //   displayName
-        // }
+       var uid=user.uid;
+       var email=user.email;
+       var displayName=user.displayName;
+      
 
-        window.location.href="./pages/home.html"
-//         firebase.database().ref("users/"+uid)
-//         .set(userObj)
-//         .then((success)=>{
+        let userObj={
+          uid,
+          email,
+          displayName
+        }
+        
+        firebase.database().ref('allusers/'+userUid)
+        .set(userObj)
+        .then((success)=>{
+            window.location.href="./pages/home.html"
 
-//         }).catch((error)=>{
-//           var errorMessage = error.message;
-// alert(errorMessage)
-//         })
+        }).catch((error)=>{
+          var errorMessage = error.message;
+alert(errorMessage)
+        })
       
 
      

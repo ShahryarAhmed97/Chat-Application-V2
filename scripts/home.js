@@ -14,7 +14,7 @@ var currentUserData=localStorage.getItem('currentUserData')
 
 
 function loadFun(){
-console.log(valueOf(firebase.database.ServerValue.TIMESTAMP))
+// console.log(valueOf(firebase.database.ServerValue.TIMESTAMP))
   var allContacts=document.getElementById("allContacts");
   var userUid=localStorage.getItem('currentUserUid');
 //   var welcm=localStorage.getItem('currentUserData');
@@ -143,8 +143,11 @@ function contactIdFun(email,key){
   
   
      firebase.database().ref('allChats/FrndsChats/'+userUid+'/'+recieverId+'/Sender/')
+
      .on('value',(data)=>{
        var msgsData=data.val();
+
+     
        msgsViewDiv2.innerHTML="";
        for(var key in msgsData){
         
@@ -159,6 +162,7 @@ function contactIdFun(email,key){
 
      var msgViewDiv1=document.getElementById("msgViewDiv1");
      firebase.database().ref('allChats/FrndsChats/'+userUid+'/'+recieverId+'/Reciever/')
+
      .on('value',(data)=>{
        var msgsData=data.val();
        msgsViewDiv1.innerHTML="";
@@ -173,26 +177,48 @@ allMsgs.push(msgsData[key])
 
   
      })  
-     allMsgs.sort(compare);
-     for(var key in allMsgs){
-console.log(allMsgs[key])
-     msgsViewDiv1.innerHTML+=
-     `
-     <table   style='overflow-wrap: break-word;padding:10px;border-radius:10px;box-shadow:0px 0px 20px grey;'>
-     <tr  style='padding:10px'>
-     <td style='font-size:1.3em;padding:10px;overflow-wrap: break-word;width:100px !important ;' ><p  style='width:300px !important ;overflow-wrap: break-word;'>${allMsgs[key].msg}</p> </td>
-    
-    </tr>
 
-   <tr style='text-align:right; color:grey;border-top:2px solid lightgrey;padding:10px;'>
-   <td>${allMsgs[key].tStamp}&nbsp;&nbsp;&nbsp; ${allMsgs[key].currentUserData} </td>
-   </tr>
- 
-     </table>
-     <br><br>
-     `
+     //  allMsgs.sort(compare);
+
+     firebase.database().ref('tempChats/'+userUid).
+     set(allMsgs)
+     .then((success)=>{
+
+    var userUid=localStorage.getItem('currentUserUid');
+
+      firebase.database().ref('tempChats/'+userUid) 
+      .orderByChild('tStamp')
+      .on('value',(data)=>{
+        var allMsgs=data.val();
+        for(var key in allMsgs){
+          console.log(allMsgs[key])
+               msgsViewDiv1.innerHTML+=
+               `
+               <table   style='overflow-wrap: break-word;padding:10px;border-radius:10px;box-shadow:0px 0px 20px grey;'>
+               <tr  style='padding:10px'>
+               <td style='font-size:1.3em;padding:10px;overflow-wrap: break-word;width:100px !important ;' ><p  style='width:300px !important ;overflow-wrap: break-word;'>${allMsgs[key].msg}</p> </td>
+              
+              </tr>
+          
+             <tr style='text-align:right; color:grey;border-top:2px solid lightgrey;padding:10px;'>
+             <td>${allMsgs[key].tStamp}&nbsp;&nbsp;&nbsp; ${allMsgs[key].currentUserData} </td>
+             </tr>
+           
+               </table>
+               <br><br>
+               `
+              
+           }
+      })
+
+
+     
+
+     })
+     .catch((error)=>{
+
+     })
     
- }
     //  setInterval(updateScroll,1000);
 
   
@@ -212,7 +238,8 @@ function sendFun(){
   console.log(currentUserData)
   
   var today = new Date();
-  var tStamp = today.getHours() + ":" + today.getMinutes() ;
+  // var tStamp = today.getHours() + ":" + today.getMinutes() ;
+  var tStamp=today.toUTCString();
     let userMsg={
     msg,
     tStamp,
@@ -255,6 +282,9 @@ function logOutFun(){
  localStorage.setItem('recieverId',null)
   localStorage.setItem('recieverEmail',null)
   localStorage.setItem('currentUserData',null);
+  localStorage.setItem('fbUser',null);
+
+
 
 
  location.href="../pages/logIn.html"

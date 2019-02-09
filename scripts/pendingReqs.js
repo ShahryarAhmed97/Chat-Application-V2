@@ -104,6 +104,8 @@ function logOutFun(){
    localStorage.setItem('currentUserUid',null)
    localStorage.setItem('recieverId',null)
     localStorage.setItem('recieverEmail',null)
+    localStorage.setItem('fbUser',null);
+
   
    location.href="../pages/logIn.html"
     }).catch(function(error) {

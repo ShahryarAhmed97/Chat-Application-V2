@@ -48,7 +48,7 @@ console.log(allUsers)
         
         <tr>
          <td><img src="../images/emptyUser.png" alt="users" height="70px" width="70px" class="userImg">
-        <button class='btn btn-success' style="width:200px; font-size:1.3em;background-color:transparent;color:green" onclick='contactIdFun("${allUsers[key].email}","${key}")'>${allUsers[key].userName}</button>
+        <button class='btn btn-success' style="width:200px; font-size:1.3em;background-color:transparent;color:green" onclick='contactIdFun("${allUsers[key].userName}","${key}")'>${allUsers[key].userName}</button>
         </td>
         </tr>
         `
@@ -139,10 +139,16 @@ function contactIdFun(email,key){
   var msgsViewDiv2=document.getElementById('msgsViewDiv2');
      document.getElementById('recieverId').value=recieverEmail;
  var allMsgs=[];
-
+ var msgRef;
+ if(userUid<recieverId){
+   msgRef=userUid+recieverId;
+ }
+ else{
+   msgRef=recieverId+userUid;
+ }
   
   
-     firebase.database().ref('allChats/FrndsChats/'+userUid+'/'+recieverId+'/Sender/')
+     firebase.database().ref('oneToOneChats/'+msgRef)
 
      .on('value',(data)=>{
        var msgsData=data.val();
@@ -150,8 +156,29 @@ function contactIdFun(email,key){
      
        msgsViewDiv2.innerHTML="";
        for(var key in msgsData){
+
+             
+  if(msgsData[key].currentUserData==undefined){
+    msgsData[key].currentUserData=recieverEmail;
+  }
+          
+          msgsViewDiv2.innerHTML+=
+          `
+          <table   style='overflow-wrap: break-word;padding:10px;border-radius:10px;box-shadow:0px 0px 20px grey;'>
+          <tr  style='padding:10px'>
+          <td style='font-size:1.3em;padding:10px;overflow-wrap: break-word;width:100px !important ;' ><p  style='width:600px !important ;overflow-wrap: break-word;'>${msgsData[key].msg}</p> </td>
+         
+         </tr>
+
+        <tr style='text-align:right; color:grey;border-top:2px solid lightgrey;padding:10px;'>
+        <td>${msgsData[key].tStamp}&nbsp;&nbsp;&nbsp; ${msgsData[key].currentUserData} </td>
+        </tr>
+      
+          </table>
+          <br><br>
+          `
+   
         
- allMsgs.push(msgsData[key])
          
         
        }
@@ -160,64 +187,64 @@ function contactIdFun(email,key){
   
      })
 
-     var msgViewDiv1=document.getElementById("msgViewDiv1");
-     firebase.database().ref('allChats/FrndsChats/'+userUid+'/'+recieverId+'/Reciever/')
+//      var msgViewDiv1=document.getElementById("msgViewDiv1");
+//      firebase.database().ref('allChats/FrndsChats/'+userUid+'/'+recieverId+'/Reciever/')
 
-     .on('value',(data)=>{
-       var msgsData=data.val();
-       msgsViewDiv1.innerHTML="";
-       for(var key in msgsData){
+//      .on('value',(data)=>{
+//        var msgsData=data.val();
+//        msgsViewDiv1.innerHTML="";
+//        for(var key in msgsData){
         
-allMsgs.push(msgsData[key])
+// allMsgs.push(msgsData[key])
           
  
         
-       }
+//        }
 
 
   
-     })  
+//      })  
 
-     //  allMsgs.sort(compare);
+//      //  allMsgs.sort(compare);
 
-     firebase.database().ref('tempChats/'+userUid).
-     set(allMsgs)
-     .then((success)=>{
+//      firebase.database().ref('tempChats/'+userUid).
+//      set(allMsgs)
+//      .then((success)=>{
 
-    var userUid=localStorage.getItem('currentUserUid');
+//     var userUid=localStorage.getItem('currentUserUid');
 
-      firebase.database().ref('tempChats/'+userUid) 
-      .orderByChild('tStamp')
-      .on('value',(data)=>{
-        var allMsgs=data.val();
-        for(var key in allMsgs){
-          console.log(allMsgs[key])
-               msgsViewDiv1.innerHTML+=
-               `
-               <table   style='overflow-wrap: break-word;padding:10px;border-radius:10px;box-shadow:0px 0px 20px grey;'>
-               <tr  style='padding:10px'>
-               <td style='font-size:1.3em;padding:10px;overflow-wrap: break-word;width:100px !important ;' ><p  style='width:300px !important ;overflow-wrap: break-word;'>${allMsgs[key].msg}</p> </td>
+//       firebase.database().ref('tempChats/'+userUid) 
+//       .orderByChild('tStamp')
+//       .on('value',(data)=>{
+//         var allMsgs=data.val();
+//         for(var key in allMsgs){
+//           console.log(allMsgs[key])
+//                msgsViewDiv1.innerHTML+=
+//                `
+//                <table   style='overflow-wrap: break-word;padding:10px;border-radius:10px;box-shadow:0px 0px 20px grey;'>
+//                <tr  style='padding:10px'>
+//                <td style='font-size:1.3em;padding:10px;overflow-wrap: break-word;width:100px !important ;' ><p  style='width:300px !important ;overflow-wrap: break-word;'>${allMsgs[key].msg}</p> </td>
               
-              </tr>
+//               </tr>
           
-             <tr style='text-align:right; color:grey;border-top:2px solid lightgrey;padding:10px;'>
-             <td>${allMsgs[key].tStamp}&nbsp;&nbsp;&nbsp; ${allMsgs[key].currentUserData} </td>
-             </tr>
+//              <tr style='text-align:right; color:grey;border-top:2px solid lightgrey;padding:10px;'>
+//              <td>${allMsgs[key].tStamp}&nbsp;&nbsp;&nbsp; ${allMsgs[key].currentUserData} </td>
+//              </tr>
            
-               </table>
-               <br><br>
-               `
+//                </table>
+//                <br><br>
+//                `
               
-           }
-      })
+//            }
+//       })
 
 
      
 
-     })
-     .catch((error)=>{
+    //  })
+    //  .catch((error)=>{
 
-     })
+    //  })
     
     //  setInterval(updateScroll,1000);
 
@@ -246,20 +273,19 @@ function sendFun(){
     currentUserData,
 
   }
- firebase.database().ref('allChats/FrndsChats/'+userUid+'/'+recieverId+'/Sender/')
+
+  var msgRef;
+  if(userUid<recieverId){
+    msgRef=userUid+recieverId;
+  }
+  else{
+    msgRef=recieverId+userUid;
+  }
+
+ firebase.database().ref('oneToOneChats/'+msgRef)
   .push(userMsg)
   .then((success)=>{
-    firebase.database().ref('allChats/FrndsChats/'+recieverId+'/'+userUid+'/Reciever/')
-    .push(userMsg)
-
-  .then((success)=>{
     contactIdFun(recieverEmail,recieverId)
-
-  })
-  .catch((error)=>{
-
-  })
-
 
 
 
@@ -292,4 +318,14 @@ function logOutFun(){
    alert(error.message)
   });    
 }
+
+// firebase.database().ref('allChats/FrndsChats/'+recieverId+'/'+userUid+'/Reciever/')
+//   .push(userMsg)
+
+// .then((success)=>{
+
+// })
+// .catch((error)=>{
+
+// })
 

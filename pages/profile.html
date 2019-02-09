@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Chat App Home</title>
-    <link rel="stylesheet" href="../styleSheets/home.css">
+    <link rel="stylesheet" href="../styleSheets/profile.css">
     <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
 
     
@@ -33,7 +33,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand my-color" href="./index.html">Chat App</a>
+                        <a class="navbar-brand my-color" href="#">Chat App</a>
                     </div>
                     <div class="collapse navbar-collapse" >
                         <ul class="nav navbar-nav"> 
@@ -49,7 +49,7 @@
                                       <li><a href="#">Page 1-3</a></li>
                                     </ul>
                                   </li> -->
-                                  <li><a href="./allUsers.html"><span class="glyphicon glyphicon-users"></span>All users</a></li>
+                                  <li><a href="../pages/allUsers.html"><span class="glyphicon glyphicon-users"></span>All users</a></li>
                                   <li><a href="./profile.html"><span class="glyphicon glyphicon-user"></span>Profile</a></li>
 
                                   <li><a href="../pages/home.html"><span class="glyphicon glyphicon-users"></span>My Friends</a></li>
@@ -61,85 +61,19 @@
                         </ul>
                     </div>
                 </div>
-            </nav>
+            </nav>   
+            <center>
+            
+                    <h2> User Area</h2>
+                  <h3 >Available for donation   <input type="checkbox" name="available" id="available" onchange="donateFun()" ></h3>
+            
+                    <div class="col-md-10 col-md-offset-1" id="userAreaDonor" >
+                          </div>
+                          
 
-<!-- 
-<div class="col-md-12" style="">
-    <div  class="col-md-10">
-            <h3  id="h1"></h3>
-
-    </div>
-    <div class="col-md-2">
-            <button  class="btn btn-danger" onclick="logOutFun()" style="margin-top:10px;"> Sign Out</button>
-
-    </div>
-</div> -->
-
-<div class="col-md-12" style="height:17px;"></div>
-<div class="col-md-12"  id="homeDiv" style="margin-top:0px;">
-
-    <div class="col-md-4" id="allUsers" >
-        <div class="form-group col-md-10" >
-            <input type="text" name="myContacts" id="myContacts" class="form-control" placeholder="Add new Contact . . ">
-      
-        </div>
-        <div class="col-md-2">
-
-                <button class="btn btn-success " >Add</button>
-            </div>
-       
-        <table style="overflow:scroll">
-            <tbody  id="allContacts"  style="width:100%;">
-
-            </tbody>
-        </table>
-
-    </div>
-
-    <div class="col-md-8" id="chatArea">
-        <div style="height: 470px;" >
-            <div class="form-group">
-
-                <input type="text" name="recieverId" id="recieverId" class="form-control" readonly>
-            </div>
-
-            <div   class="col-md-12" style="height: 400px; overflow: scroll;" id="scrollDiv">
-                    <!-- <div id="msgsViewDiv1" class="col-md-5 ">
-      
-                      </div> -->
-              <div id="msgsViewDiv2" class="col-md-6  ">
-
-              </div>
+                            </center>
 
 
-
-            </div>
-
-        </div>
-<br>
-        <div class="form-group" >
-            <div class="form-group col-md-11">
-
-                <!-- <input type="text" name="msg" id="msg" placeholder="create new msg .." class="form-control" style="overflow:scroll" > -->
-           <textarea name="msg" id="msg" cols="30" style="font-size: 1.2em;" placeholder="create new msg .."  class="form-control">
-
-           </textarea>
-           
-            </div>
-            <div class="col-md-1">
-
-                <button class="btn btn-success" onclick="sendFun()">Send</button>
-            </div>
-        </div>
-
-    </div>
-
-
-</div>
-
-
-
-
-    <script src="../scripts/home.js"></script>
+    <script src="../scripts/profile.js"></script>
 </body>
 </html>

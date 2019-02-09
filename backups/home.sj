@@ -14,7 +14,7 @@ var currentUserData=localStorage.getItem('currentUserData')
 
 
 function loadFun(){
-
+// console.log(valueOf(firebase.database.ServerValue.TIMESTAMP))
   var allContacts=document.getElementById("allContacts");
   var userUid=localStorage.getItem('currentUserUid');
 //   var welcm=localStorage.getItem('currentUserData');
@@ -118,7 +118,13 @@ function updateScroll(){
   scrollDiv.scrollTop = scrollDiv.scrollHeight;
 }
 
-
+function compare(a,b) {
+  if (a.last_nom < b.last_nom)
+    return -1;
+  if (a.last_nom > b.last_nom)
+    return 1;
+  return 0;
+}
 
 
 
@@ -132,77 +138,95 @@ function contactIdFun(email,key){
     localStorage.setItem('recieverEmail',email)
   var msgsViewDiv2=document.getElementById('msgsViewDiv2');
      document.getElementById('recieverId').value=recieverEmail;
-  // var msgRef=userUid+recieverId;
-  var msgRef;
-  if(userUid<recieverId){
-    msgRef=userUid+recieverId;
-  }
-  else{
-    msgRef=recieverId+userUid;
-  }
+ var allMsgs=[];
+ var msgRef;
+ if(userUid<recieverId){
+   msgRef=userUid+recieverId;
+ }
+ else{
+   msgRef=recieverId+userUid;
+ }
   
   
-     firebase.database().ref('msgs/'+msgRef)
+     firebase.database().ref('allChats/FrndsChats/'+userUid+'/'+recieverId+'/'+msgRef)
+
      .on('value',(data)=>{
        var msgsData=data.val();
+
+     
        msgsViewDiv2.innerHTML="";
        for(var key in msgsData){
         
-  if(msgsData[key].currentUserData==undefined){
-    msgsData[key].currentUserData=recieverEmail;
-  }
-          
-          msgsViewDiv2.innerHTML+=
-          `
-          <table   style='overflow-wrap: break-word;padding:10px;border-radius:10px;box-shadow:0px 0px 20px grey;'>
-          <tr  style='padding:10px'>
-          <td style='font-size:1.3em;padding:10px;overflow-wrap: break-word;width:100px !important ;' ><p  style='width:600px !important ;overflow-wrap: break-word;'>${msgsData[key].msg}</p> </td>
+ allMsgs.push(msgsData[key])
          
-         </tr>
-
-        <tr style='text-align:right; color:grey;border-top:2px solid lightgrey;padding:10px;'>
-        <td>${msgsData[key].tStamp}&nbsp;&nbsp;&nbsp; ${msgsData[key].currentUserData} </td>
-        </tr>
-      
-          </table>
-          <br><br>
-          `
         
        }
 
-       setInterval(updateScroll,1000);
 
   
      })
-  
-  
-  
-    //  var msgsViewDiv1=document.getElementById('msgsViewDiv1');
-  
-    //  var msgRef1=recieverId+userUid;
-    // firebase.database().ref('msgs/'+msgRef1)
-    // .on('value',(data)=>{
-    //   var msgsData=data.val();
-    //   msgsViewDiv1.innerHTML="";
-    //   for(var key in msgsData){
-       
-  
-         
-    //      msgsViewDiv1.innerHTML+=
-    //      `
-    //      <tr>
-    //      <td>${msgsData[key].msg} </td>
-    //      <td>${msgsData[key].tStamp} </td>
 
-    //      </tr>
-    //      <br><br>
-    //      `
-       
-    //   }
+     var msgViewDiv1=document.getElementById("msgViewDiv1");
+     firebase.database().ref('allChats/FrndsChats/'+userUid+'/'+recieverId+'/Reciever/')
+
+     .on('value',(data)=>{
+       var msgsData=data.val();
+       msgsViewDiv1.innerHTML="";
+       for(var key in msgsData){
+        
+allMsgs.push(msgsData[key])
+          
+ 
+        
+       }
+
+
+  
+     })  
+
+     //  allMsgs.sort(compare);
+
+     firebase.database().ref('tempChats/'+userUid).
+     set(allMsgs)
+     .then((success)=>{
+
+    var userUid=localStorage.getItem('currentUserUid');
+
+      firebase.database().ref('tempChats/'+userUid) 
+      .orderByChild('tStamp')
+      .on('value',(data)=>{
+        var allMsgs=data.val();
+        for(var key in allMsgs){
+          console.log(allMsgs[key])
+               msgsViewDiv1.innerHTML+=
+               `
+               <table   style='overflow-wrap: break-word;padding:10px;border-radius:10px;box-shadow:0px 0px 20px grey;'>
+               <tr  style='padding:10px'>
+               <td style='font-size:1.3em;padding:10px;overflow-wrap: break-word;width:100px !important ;' ><p  style='width:300px !important ;overflow-wrap: break-word;'>${allMsgs[key].msg}</p> </td>
+              
+              </tr>
+          
+             <tr style='text-align:right; color:grey;border-top:2px solid lightgrey;padding:10px;'>
+             <td>${allMsgs[key].tStamp}&nbsp;&nbsp;&nbsp; ${allMsgs[key].currentUserData} </td>
+             </tr>
+           
+               </table>
+               <br><br>
+               `
+              
+           }
+      })
+
+
      
-    //  })
-  
-  
+
+     })
+     .catch((error)=>{
+
+     })
+    
+    //  setInterval(updateScroll,1000);
+
   
   
   }
@@ -218,25 +242,32 @@ function sendFun(){
   var recieverEmail=localStorage.getItem('recieverEmail');
   var currentUserData=localStorage.getItem('currentUserData')
   console.log(currentUserData)
-  var msgRef;
-  if(userUid<recieverId){
-    msgRef=userUid+recieverId;
-  }
-  else{
-    msgRef=recieverId+userUid;
-  }
+  
   var today = new Date();
-  var tStamp = today.getHours() + ":" + today.getMinutes() ;
+  // var tStamp = today.getHours() + ":" + today.getMinutes() ;
+  var tStamp=today.toUTCString();
     let userMsg={
     msg,
     tStamp,
     currentUserData,
 
   }
- firebase.database().ref("msgs/"+msgRef)
+ firebase.database().ref('allChats/FrndsChats/'+userUid+'/'+recieverId+'/Sender/')
   .push(userMsg)
   .then((success)=>{
-contactIdFun(recieverEmail,recieverId)
+    firebase.database().ref('allChats/FrndsChats/'+recieverId+'/'+userUid+'/Reciever/')
+    .push(userMsg)
+
+  .then((success)=>{
+    contactIdFun(recieverEmail,recieverId)
+
+  })
+  .catch((error)=>{
+
+  })
+
+
+
 
   })
   .catch((error)=>{
@@ -257,6 +288,9 @@ function logOutFun(){
  localStorage.setItem('recieverId',null)
   localStorage.setItem('recieverEmail',null)
   localStorage.setItem('currentUserData',null);
+  localStorage.setItem('fbUser',null);
+
+
 
 
  location.href="../pages/logIn.html"

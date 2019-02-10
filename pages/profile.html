@@ -25,7 +25,7 @@
 <body onLoad="loadFun()">
 
 
-        <nav class="navbar navbar-inverse">
+        <nav class="navbar navbar-inverse ">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -35,26 +35,18 @@
                         </button>
                         <a class="navbar-brand my-color" href="#">Chat App</a>
                     </div>
-                    <div class="collapse navbar-collapse" >
-                        <ul class="nav navbar-nav"> 
-                            <li>    
-                            </li>
-                        </ul>
+                    <div class="collapse navbar-collapse" id="myNavbar" >
+                        <!-- <ul class="nav navbar-nav">
+                
+                </ul> -->
                        
                         <ul class="nav navbar-nav navbar-right">
-                                <!-- <li class="dropdown"><a class="dropdown-toggle  glyphicon glyphicon-users" data-toggle="dropdown" href="./allUsers.html">All Users <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                            <li><a href="../pages/pendingReqs.html"><span class="glyphicon glyphicon-users"></span>Pending Reqs</a></li>
-                                            <li><a href="#">Page 1-2</a></li>
-                                      <li><a href="#">Page 1-3</a></li>
-                                    </ul>
-                                  </li> -->
+                              
                                   <li><a href="../pages/allUsers.html"><span class="glyphicon glyphicon-users"></span>All users</a></li>
                                   <li><a href="./profile.html"><span class="glyphicon glyphicon-user"></span>Profile</a></li>
 
                                   <li><a href="../pages/home.html"><span class="glyphicon glyphicon-users"></span>My Friends</a></li>
                                   <li><a href="../pages/pendingReqs.html"><span class="glyphicon glyphicon-users"></span>Pending Requests</a></li>
-                                  <li><a href="../pages/blockedUsers.html"><span class="glyphicon glyphicon-users"></span>Blocked Users</a></li>
       
                                   <li><a href="#" onclick="logOutFun()"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
       
@@ -65,13 +57,12 @@
             <center>
             
                     <h2> User Area</h2>
-                  <h3 >Available for donation   <input type="checkbox" name="available" id="available" onchange="donateFun()" ></h3>
             
-                    <div class="col-md-10 col-md-offset-1" id="userAreaDonor" >
-                          </div>
-                          
+                    <div class="col-md-10 col-md-offset-1" id="userAreaDiv" >
 
-                            </center>
+
+                          </div>
+                        </center>
 
 
     <script src="../scripts/profile.js"></script>

@@ -18,12 +18,14 @@ var config = {
      var allUsers=data.val();
 
 for(var key in allUsers){
-
+if(allUsers[key].userImg==undefined){
+    allUsers[key].userImg="../images/emptyUser.png"
+}
      document.getElementById("homeDiv").innerHTML+=
      `
      <div class="col-md-4 userDiv"  >
      <div class="col-md-4" style="">
-         <img src="../images/emptyUser.png" alt="users" height="70px" width="70px" class="userImg">
+         <img src="${allUsers[key].userImg}" alt="users" height="70px" width="70px" class="userImg">
 
      </div>
      <div class="col-md-4" style="margin-top:15px" >

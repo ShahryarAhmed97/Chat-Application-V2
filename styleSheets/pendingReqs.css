@@ -1,16 +1,18 @@
 #homeDiv{
-    border: 2px solid green;
+    /* border: 2px solid green; */
 }
 
 #headDiv{
-    border: 2px solid red;
+    /* border: 2px solid red; */
 
 }
 
 .userDiv{
     padding:2px;
     border-radius: 30px;
-    border:2px solid black;
+    box-shadow: 0px 0px 20px gray;
+    margin-bottom:10px;
+    /* border:2px solid black; */
 }
 
 .userImg{

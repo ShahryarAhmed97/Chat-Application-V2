@@ -29,7 +29,14 @@
         localStorage.setItem('currentUserData',userEmail);
         
         localStorage.setItem('currentUserUid',userUid);
-        location.href="../pages/home.html";
+        firebase.database().ref('allusers/'+userUid)
+        .once('value',(data)=>{
+          var userObj=data.val();
+          localStorage.setItem('currentUserName',userObj.userName)
+
+          location.href="../pages/home.html";
+
+        })
 
     })
     .catch(function(error) {
